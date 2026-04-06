@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPK Praktikum 1 - Polindra</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #60a5fa;
+            --bg: #f8fafc;
+            --card: rgba(255, 255, 255, 0.8);
+            --text: #1e293b;
+            --text-light: #64748b;
+            --accent: #f59e0b;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, white, #f1f5f9);
+            padding: 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 1);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        .header p {
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Form Styling */
+        form p { margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 1rem;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            background: #f1f5f9;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        button:hover { background: #1d4ed8; filter: brightness(1.1); }
+
+        /* Summary Styling */
+        .info-box {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .info-box p { margin: 5px 0; font-size: 0.95rem; }
+
+        /* Table Styling */
+        .table-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--text-light);
+            text-align: left;
+            padding: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        tr:hover { background: #f8fafc; }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-light);
+            font-style: italic;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>POLINDRA - Sistim Informasi Kota Cerdas</h1>
+        <h2>Sistem Pendukung Keputusan</h2>
+        <p>Praktikum 1: Pengenalan Data & Permasalahan Keputusan</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Upload Data CSV</h3>
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+                <p>Data Kriteria:</p>
+                <input type="file" name="kriteria" accept=".csv">
+
+                <p>Data Alternatif:</p>
+                <input type="file" name="alternatif" accept=".csv">
+
+                <button type="submit">Upload & Analisis</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Ringkasan Informasi</h3>
+            <div class="info-box">
+                <p><strong>Jumlah Kriteria:</strong> {{ info_kriteria.baris }} ({{ info_kriteria.kolom }} kolom)</p>
+                <p><strong>Jumlah Alternatif:</strong> {{ info_alternatif.baris }} ({{ info_alternatif.kolom }} kolom)</p>
+            </div>
+            <p style="font-size: 0.8rem; color: #64748b; margin-top: 1rem;">
+                * Data ini digunakan sebagai fondasi dalam perumusan masalah keputusan.
+            </p>
+        </div>
+    </div>
+
+    <h3>Tabel Data Kriteria</h3>
+    <div class="table-container">
+        {% if kriteria %}
+            {{ kriteria | safe }}
+        {% else %}
+            <div class="empty-state">Data kriteria belum diupload.</div>
+        {% endif %}
+    </div>
+
+    <h3>Tabel Data Alternatif</h3>
+    <div class="table-container">
+        {% if alternatif %}
+            {{ alternatif | safe }}
+        {% else %}
+            <div class="empty-state">Data alternatif belum diupload.</div>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
