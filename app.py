@@ -44,7 +44,7 @@ def upload():
     if "alternatif" in request.files:
         request.files["alternatif"].save(ALT_PATH)
 
-    return redirect(url_for("index"))
+    return redirect(url_for("index"))   
 
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
